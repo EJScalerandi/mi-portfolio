@@ -1,11 +1,56 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import useChat from "../hooks/useChat"
 
-export default function chatWidget() { // 👈 Nombre del componente en mayúscula
+// Hook interno (sin importar nada externo)
+function useChatInline(apiBase = import.meta.env.VITE_API_URL || "") {
+  const [msgs, setMsgs] = useState([]); // [{role:"user"|"assistant", content:string}]
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const abortRef = useRef(null);
+
+  async function send(text) {
+    const prompt = String(text || "").trim();
+    if (!prompt || loading) return;
+
+    const next = [...msgs, { role: "user", content: prompt }];
+    setMsgs(next);
+    setError("");
+    setLoading(true);
+
+    abortRef.current?.abort?.();
+    abortRef.current = new AbortController();
+
+    try {
+      if (!apiBase) throw new Error("Falta VITE_API_URL en el frontend.");
+      const res = await fetch(`${apiBase}/api/ask`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: abortRef.current.signal,
+        body: JSON.stringify({
+          prompt,
+          history: next.slice(-8) // últimos 8 mensajes
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || "Error de red");
+      setMsgs(prev => [...prev, { role: "assistant", content: data.reply || "(sin respuesta)" }]);
+    } catch (e) {
+      if (e.name !== "AbortError") setError(e.message || "Error");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function reset() { setMsgs([]); setError(""); }
+  function abort() { abortRef.current?.abort?.(); setLoading(false); }
+
+  return { msgs, loading, error, send, reset, abort };
+}
+
+export default function ChatWidg() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
-  const { msgs, loading, error, send, reset } = useChat();
+  const { msgs, loading, error, send, reset } = useChatInline();
   const listRef = useRef(null);
 
   useEffect(() => {
@@ -35,8 +80,9 @@ export default function chatWidget() { // 👈 Nombre del componente en mayúscu
         aria-label="Abrir chat"
         title="Chat"
       >
-        {/* ícono chat */}
-        <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
+        </svg>
       </button>
 
       {/* Ventana de chat */}

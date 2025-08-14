@@ -6,7 +6,7 @@ import Projects from "./components/Projects";
 import Footer from "./components/Footer";
 import CursorSpark from "./components/CursorSpark";
 import galaxi from "./assets/Galaxy2.png";
-import ChatWidget from "./components/chatWidget";
+import ChatWidg from "./components/ChatWidget";
 
 
 export default function App() {
@@ -64,7 +64,7 @@ export default function App() {
       </motion.div>
 
       {/* 👇 botón flotante + chat */}
-      <ChatWidget />
+      <ChatWidg />
 
       <CursorSpark />
     </motion.div>

@@ -7,7 +7,7 @@ import Footer from "./components/Footer";
 import CursorSpark from "./components/CursorSpark";
 import galaxi from "./assets/Galaxy2.png";
 
-import ChatWidget from "./components/chatWidget";
+import ChatWidget from "./components/chatWidget"
 
 export default function App() {
   const { x, y } = useParallax(40);

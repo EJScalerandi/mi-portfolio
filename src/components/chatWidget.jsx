@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import useChat from "../hooks/useChat";
 
-export default function ChatWidget() {
+export default function chatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const { msgs, loading, error, send, reset } = useChat();

@@ -6,7 +6,7 @@ import Projects from "./components/Projects";
 import Footer from "./components/Footer";
 import CursorSpark from "./components/CursorSpark";
 import galaxi from "./assets/Galaxy2.png";
-import ChatWidg from "./components/ChatWidget";
+import ChatWidg from "./components/ChatWidgets";
 
 
 export default function App() {

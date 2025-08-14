@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import useChat from "../hooks/useChat.js"; // 👈 incluye extensión y coincide en casing
+import useChat from "../hooks/useChat"
 
 export default function chatWidget() { // 👈 Nombre del componente en mayúscula
   const [open, setOpen] = useState(false);

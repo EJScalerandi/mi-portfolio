@@ -1,80 +1,73 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function CursorSpark() {
-  const [pos, setPos] = useState({ x: -100, y: -100 });
-  const [trail, setTrail] = useState([]);
+  const [sparks, setSparks] = useState([]); // {id,x,y,vx,vy,life}
+  const nextId = useRef(1);
+  // Prefijo único por instancia para evitar colisiones entre múltiples montajes
+  const instancePrefix = useRef(`${Math.random().toString(36).slice(2)}-`);
 
+  // Generar chispas con el puntero
   useEffect(() => {
-    function handleMouseMove(e) {
-      const { clientX, clientY } = e;
-      setPos({ x: clientX, y: clientY });
-
-      setTrail((prev) => [
-        ...prev.slice(-15), // mantiene últimos 15 puntos
-        { x: clientX, y: clientY, id: Date.now() },
-      ]);
-    }
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
+    const handleMove = (e) => {
+      const id = nextId.current++; // ID incremental
+      const s = {
+        id,
+        x: e.clientX,
+        y: e.clientY,
+        vx: (Math.random() - 0.5) * 1.5,
+        vy: -Math.random() * 2 - 0.5,
+        life: 0
+      };
+      setSparks((arr) => {
+        const arr2 = arr.length >= 40 ? arr.slice(1) : arr.slice();
+        arr2.push(s);
+        return arr2;
+      });
     };
+
+    window.addEventListener("pointermove", handleMove, { passive: true });
+    return () => window.removeEventListener("pointermove", handleMove);
   }, []);
 
+  // Animación / fade-out
+  useEffect(() => {
+    let raf;
+    const step = () => {
+      setSparks((prev) =>
+        prev
+          .map((p) => ({
+            ...p,
+            x: p.x + p.vx,
+            y: p.y + p.vy,
+            life: p.life + 16
+          }))
+          .filter((p) => p.life < 700)
+      );
+      raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  const prefix = instancePrefix.current;
+
   return (
-    <>
-      <style>{`
-        body, * {
-          cursor: none !important;
-        }
-        .comet-cursor {
-          position: fixed;
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          background: #00ffff;
-          box-shadow: 0 0 12px 4px #00ffff;
-          pointer-events: none;
-          z-index: 9999;
-        }
-        .trail-dot {
-          position: fixed;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: rgba(0, 255, 255, 0.4);
-          box-shadow: 0 0 8px 2px rgba(0, 255, 255, 0.3);
-          pointer-events: none;
-          z-index: 9998;
-          animation: fadeOut 0.5s forwards;
-        }
-        @keyframes fadeOut {
-          to {
-            opacity: 0;
-            transform: scale(0.5);
-          }
-        }
-      `}</style>
-
-      {/* Cometa principal */}
-      <div
-        className="comet-cursor"
-        style={{
-          transform: `translate(${pos.x - 6}px, ${pos.y - 6}px)`,
-        }}
-      />
-
-      {/* Estela */}
-      {trail.map((dot) => (
-        <div
-          key={dot.id}
-          className="trail-dot"
+    <div className="pointer-events-none fixed inset-0 z-50">
+      {sparks.map((s) => (
+        <span
+          key={`${prefix}${s.id}`} // ✅ clave única incluso si hay varias instancias
+          className="absolute block rounded-full"
           style={{
-            left: dot.x - 4,
-            top: dot.y - 4,
+            left: s.x,
+            top: s.y,
+            width: 6,
+            height: 6,
+            transform: "translate(-50%,-50%)",
+            background: "rgba(255,255,255,0.9)",
+            opacity: 1 - s.life / 700
           }}
         />
       ))}
-    </>
+    </div>
   );
 }

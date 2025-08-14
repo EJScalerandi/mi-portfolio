@@ -7,6 +7,9 @@ import Footer from "./components/Footer";
 import CursorSpark from "./components/CursorSpark";
 import galaxi from "./assets/Galaxy2.png";
 
+// 👇 nuevo
+import ChatWidget from "./components/ChatWidget";
+
 export default function App() {
   const { x, y } = useParallax(40);
 
@@ -25,8 +28,6 @@ export default function App() {
       animate={{ opacity: 1 }}
       transition={{ duration: 1.5 }}
     >
-   
-
       <motion.div
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -62,6 +63,9 @@ export default function App() {
       >
         <Footer />
       </motion.div>
+
+      {/* 👇 botón flotante + chat */}
+      <ChatWidget />
 
       <CursorSpark />
     </motion.div>

@@ -18,12 +18,12 @@ const projects = [
       "Frontend con React + Vite y componentes dinámicos (Material UI)",
       "Backend con Node.js",
       "Integración con base de datos PostgreSQL",
-      "Diseño de vistas por sector y actualizaciones en tiempo real",
+      "Diseño de vistas por sector y actualizaciones en tiempo real"
     ],
     tech: ["React", "Vite", "Material UI", "JavaScript", "Node.js", "PostgreSQL"],
     repo: "https://github.com/EJScalerandi/DeGrandisPortones",
     deploy: "",
-    highlights: ["Estados en tiempo real", "Resumen ejecutivo por estado", "Mejora de flujo de trabajo"],
+    highlights: ["Estados en tiempo real", "Resumen ejecutivo por estado", "Mejora de flujo de trabajo"]
   },
   {
     slug: "msf",
@@ -40,12 +40,12 @@ const projects = [
       "Diseño y desarrollo de la base de datos en MySQL",
       "Procedimientos y consultas optimizadas",
       "Backend en PHP para la lógica del sitio",
-      "Configuración de servidor Apache (XAMPP)",
+      "Configuración de servidor Apache (XAMPP)"
     ],
     tech: ["PHP", "MySQL", "XAMPP", "Apache"],
     repo: "https://github.com/Manuochoa16/msf_micrositio",
     deploy: "",
-    highlights: ["Modelo de datos optimizado", "Despliegue estable", "Buen rendimiento en consultas"],
+    highlights: ["Modelo de datos optimizado", "Despliegue estable", "Buen rendimiento en consultas"]
   },
   {
     slug: "woofer",
@@ -61,12 +61,12 @@ const projects = [
       "Frontend con Next.js/React (HomeWalker)",
       "Integración de comunicación entre clientes",
       "Sistema de notificaciones",
-      "Gestión de estados con Redux",
+      "Gestión de estados con Redux"
     ],
     tech: ["JavaScript", "Next.js", "React", "Redux", "Node.js", "Next.js", "Firebase", "Cloudinary", "PostgreSQL", "Sequelize"],
     repo: "https://github.com/germiiii/Woofer",
     deploy: "https://woofer-taupe.vercel.app/",
-    highlights: ["Autenticación", "Feed dinámico", "Arquitectura cliente/servidor clara"],
+    highlights: ["Autenticación", "Feed dinámico", "Arquitectura cliente/servidor clara"]
   },
   {
     slug: "videogames",
@@ -82,12 +82,12 @@ const projects = [
       "Frontend con React + Redux",
       "Backend con Node.js + Sequelize",
       "Modelo y relaciones en PostgreSQL",
-      "Notificaciones para mejorar la UX",
+      "Notificaciones para mejorar la UX"
     ],
     tech: ["JavaScript", "React", "Redux", "Node.js", "Sequelize", "PostgreSQL"],
     repo: "https://github.com/EJScalerandi/VideoGames",
     deploy: "",
-    highlights: ["SPA con filtros/búsquedas", "Estado global", "Persistencia robusta"],
+    highlights: ["SPA con filtros/búsquedas", "Estado global", "Persistencia robusta"]
   },
   {
     slug: "backficticia",
@@ -102,61 +102,38 @@ const projects = [
     responsibilities: [
       "Diseño de endpoints REST",
       "Validaciones y control de errores",
-      "Modelo relacional y queries",
+      "Modelo relacional y queries"
     ],
     tech: ["Node.js", "Express", "PostgreSQL"],
     repo: "https://github.com/EJScalerandi/BackFicticia",
     deploy: "https://proyecto-ficticia-78jw.vercel.app/",
-    highlights: ["Validaciones robustas", "Modelo limpio", "Control de errores"],
-  },
-  // {
-  //   slug: "panicafe",
-  //   title: "Tienda Nube Panicafe",
-  //   period: "2020 – 2023",
-  //   started: "2020-01",
-  //   purpose: "E-commerce personalizado en producción con mejoras continuas.",
-  //   description:
-  //     "Customizaciones front, gestión de catálogo, soporte y mejoras UX.",
-  //   role: "Frontend / Implementación",
-  //   team: "Operación en producción",
-  //   responsibilities: [
-  //     "Personalización visual y layout",
-  //     "Mejoras UX y conversiones",
-  //     "Soporte y mantenimiento",
-  //   ],
-  //   tech: ["HTML", "CSS", "JavaScript", "Tienda Nube"],
-  //   repo: "",
-  //   deploy: "",
-  //   highlights: ["Personalización", "Mejor UX", "Mantenimiento continuo"],
-  // },
-  // {
-  //   slug: "esyf",
-  //   title: "ESYF",
-  //   period: "2024",
-  //   started: "2024-01",
-  //   purpose: "Sitio institucional de cartelería.",
-  //   description:
-  //     "Página informativa responsive, foco en claridad de oferta y contacto.",
-  //   role: "Frontend",
-  //   team: "Individual",
-  //   responsibilities: [
-  //     "Maquetado responsive",
-  //     "Optimización de tiempos de carga",
-  //     "Jerarquía visual clara",
-  //   ],
-  //   tech: ["HTML", "CSS", "JavaScript"],
-  //   repo: "https://github.com/EJScalerandi/ESYF",
-  //   deploy: "",
-  //   highlights: ["Diseño limpio", "Responsive", "Contacto claro"],
-  // },
+    highlights: ["Validaciones robustas", "Modelo limpio", "Control de errores"]
+  }
 ];
+
+// ─────────────────────── Auxiliares ───────────────────────
+const uniqStr = (arr = []) => [...new Set(arr.filter(Boolean))];
+
+function InfoRow({ label, value }) {
+  return (
+    <div className="text-sm">
+      <span className="font-semibold">{label}: </span>
+      <span>{value}</span>
+    </div>
+  );
+}
+
+function formatYM(ym) {
+  if (!ym) return "—";
+  const [y, m] = ym.split("-");
+  const meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+  return `${meses[(+m || 1) - 1]} ${y}`;
+}
 
 // ─────────────────────── UI ───────────────────────
 export default function Projects() {
-  const [hovered, setHovered] = useState(null);
   const [selected, setSelected] = useState(null);
 
-  // Siempre abre el modal (deploy y repo van como botones dentro)
   const handleOpen = (p) => setSelected(p);
 
   return (
@@ -164,50 +141,51 @@ export default function Projects() {
       <h2 className="text-4xl font-bold mb-12 text-blue-100 drop-shadow-md">Proyectos</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 place-items-center">
-        {projects.map((p, i) => (
-          <motion.button
-            key={p.slug}
-            type="button"
-            onClick={() => handleOpen(p)}
-            onMouseEnter={() => setHovered(i)}
-            onMouseLeave={() => setHovered(null)}
-            whileHover={{ scale: 1.06 }}
-            transition={{ type: "spring", stiffness: 260, damping: 18 }}
-            className="group relative w-80 h-80 rounded-2xl overflow-hidden ring-1 ring-white/10 
-                       bg-gradient-to-br from-slate-800/70 via-slate-900/70 to-black/60
-                       backdrop-blur-[1px] shadow-lg transition-colors duration-300 text-center"
-          >
-            <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="relative z-10 h-full flex flex-col justify-between p-4 text-slate-100 group-hover:text-slate-800 transition-colors duration-300">
-              <div>
-                <h3 className="text-xl font-extrabold tracking-tight text-center">{p.title}</h3>
-                <p className="mt-1 text-xs opacity-80 text-center">{p.period}</p>
-                <p className="mt-3 text-sm opacity-90 line-clamp-3">{p.description}</p>
-              </div>
-              <div>
-                <div className="flex flex-wrap gap-2 mt-3 justify-center">
-                  {p.tech.map((t) => (
-                    <span
-                      key={t}
-                      className="px-2 py-0.5 text-xs rounded-full
-                                 bg-white/15 group-hover:bg-slate-900/10
-                                 text-slate-100 group-hover:text-slate-800
-                                 ring-1 ring-white/10 group-hover:ring-slate-300 transition-colors"
-                    >
-                      {t}
-                    </span>
-                  ))}
+        {projects.map((p, iProj) => {
+          const techs = uniqStr(p.tech);
+          const cardKey = p.slug ?? `proj-${iProj}`;
+          return (
+            <motion.button
+              key={cardKey}
+              type="button"
+              onClick={() => handleOpen(p)}
+              whileHover={{ scale: 1.06 }}
+              transition={{ type: "spring", stiffness: 260, damping: 18 }}
+              className="group relative w-80 h-80 rounded-2xl overflow-hidden ring-1 ring-white/10 
+                         bg-gradient-to-br from-slate-800/70 via-slate-900/70 to-black/60
+                         backdrop-blur-[1px] shadow-lg transition-colors duration-300 text-center"
+            >
+              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative z-10 h-full flex flex-col justify-between p-4 text-slate-100 group-hover:text-slate-800 transition-colors duration-300">
+                <div>
+                  <h3 className="text-xl font-extrabold tracking-tight text-center">{p.title}</h3>
+                  <p className="mt-1 text-xs opacity-80 text-center">{p.period}</p>
+                  <p className="mt-3 text-sm opacity-90 line-clamp-3">{p.description}</p>
+                </div>
+                <div>
+                  <div className="flex flex-wrap gap-2 mt-3 justify-center">
+                    {techs.map((t, iTech) => (
+                      <span
+                        key={`${cardKey}-tech-${iTech}`}
+                        className="px-2 py-0.5 text-xs rounded-full
+                                   bg-white/15 group-hover:bg-slate-900/10
+                                   text-slate-100 group-hover:text-slate-800
+                                   ring-1 ring-white/10 group-hover:ring-slate-300 transition-colors"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-white/10 group-hover:ring-slate-300" />
-            <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300
-                            shadow-[0_0_45px_10px_rgba(255,255,255,0.35)] rounded-2xl" />
-          </motion.button>
-        ))}
+              <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-white/10 group-hover:ring-slate-300" />
+              <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300
+                              shadow-[0_0_45px_10px_rgba(255,255,255,0.35)] rounded-2xl" />
+            </motion.button>
+          );
+        })}
       </div>
 
-      {/* Modal */}
       <AnimatePresence>
         {selected && (
           <motion.div
@@ -239,45 +217,50 @@ export default function Projects() {
 
                 <div className="mt-4 space-y-3">
                   <InfoRow label="Inicio" value={formatYM(selected.started)} />
-                  {selected.role && <InfoRow label="Rol" value={selected.role} />}
-                  {selected.team && <InfoRow label="Equipo" value={selected.team} />}
+                  {selected.role ? <InfoRow label="Rol" value={selected.role} /> : null}
+                  {selected.team ? <InfoRow label="Equipo" value={selected.team} /> : null}
                   <InfoRow label="Propósito" value={selected.purpose} />
                   <InfoRow label="Descripción" value={selected.description} />
 
-                  {selected.responsibilities?.length > 0 && (
+                  {Array.isArray(selected.responsibilities) && selected.responsibilities.length > 0 ? (
                     <div>
                       <p className="text-sm font-semibold mb-1">Responsabilidades</p>
                       <ul className="list-disc pl-5 text-sm space-y-1">
-                        {selected.responsibilities.map((r) => (
-                          <li key={r}>{r}</li>
+                        {selected.responsibilities.map((r, i) => (
+                          <li key={`${selected.slug}-resp-${i}`}>{r}</li>
                         ))}
                       </ul>
                     </div>
-                  )}
+                  ) : null}
 
                   <div>
                     <p className="text-sm font-semibold mb-1">Tecnologías</p>
                     <div className="flex flex-wrap gap-2">
-                      {selected.tech.map((t) => (
-                        <span key={t} className="px-2 py-0.5 text-xs rounded-full bg-slate-900/10 text-slate-800 ring-1 ring-slate-300">
+                      {uniqStr(selected.tech).map((t, i) => (
+                        <span
+                          key={`${selected.slug}-tech-${i}`}
+                          className="px-2 py-0.5 text-xs rounded-full bg-slate-900/10 text-slate-800 ring-1 ring-slate-300"
+                        >
                           {t}
                         </span>
                       ))}
                     </div>
                   </div>
 
-                  {selected.highlights?.length > 0 && (
+                  {Array.isArray(selected.highlights) && selected.highlights.length > 0 ? (
                     <div>
                       <p className="text-sm font-semibold mb-1">Puntos clave</p>
                       <ul className="list-disc pl-5 text-sm space-y-1">
-                        {selected.highlights.map((h) => <li key={h}>{h}</li>)}
+                        {selected.highlights.map((h, i) => (
+                          <li key={`${selected.slug}-hl-${i}`}>{h}</li>
+                        ))}
                       </ul>
                     </div>
-                  )}
+                  ) : null}
                 </div>
 
                 <div className="mt-6 flex items-center justify-end gap-3">
-                  {selected.repo && (
+                  {selected.repo ? (
                     <a
                       href={selected.repo}
                       target="_blank"
@@ -286,8 +269,8 @@ export default function Projects() {
                     >
                       Repositorio
                     </a>
-                  )}
-                  {selected.deploy && (
+                  ) : null}
+                  {selected.deploy ? (
                     <a
                       href={selected.deploy}
                       target="_blank"
@@ -296,7 +279,7 @@ export default function Projects() {
                     >
                       Visitar sitio
                     </a>
-                  )}
+                  ) : null}
                   <button
                     onClick={() => setSelected(null)}
                     className="rounded-md px-3 py-1.5 border border-slate-300 hover:bg-slate-50"
@@ -311,21 +294,4 @@ export default function Projects() {
       </AnimatePresence>
     </section>
   );
-}
-
-// ─────────────────────── Auxiliares ───────────────────────
-function InfoRow({ label, value }) {
-  return (
-    <div className="text-sm">
-      <span className="font-semibold">{label}: </span>
-      <span>{value}</span>
-    </div>
-  );
-}
-
-function formatYM(ym) {
-  if (!ym) return "—";
-  const [y, m] = ym.split("-");
-  const meses = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
-  return `${meses[(+m || 1) - 1]} ${y}`;
 }

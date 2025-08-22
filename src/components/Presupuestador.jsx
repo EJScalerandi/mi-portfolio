@@ -38,8 +38,8 @@ export default function Presupuestador() {
   });
 
   const [items, setItems] = useState([emptyItem()]);
-  const [discountPct, setDiscountPct] = useState(0); // % sobre subtotal
-  const [taxPct, setTaxPct] = useState(21); // IVA por defecto
+  const [discountPct, setDiscountPct] = useState(0);
+  const [taxPct, setTaxPct] = useState(21);
 
   // Persistencia
   useEffect(() => {
@@ -92,11 +92,9 @@ export default function Presupuestador() {
   // 🔐 Gate de clave
   const checkKey = () => {
     const k = window.prompt("Ingresá la clave del presupuestador:");
-    if (k == null) return false; // cancelado
+    if (k == null) return false;
     const ok = String(k).trim() === PRESU_KEY;
-    if (!ok) {
-      window.alert("Clave incorrecta. Contactate con Esteban para el uso del presupuestador.");
-    }
+    if (!ok) window.alert("Clave incorrecta. Contactate con Esteban para el uso del presupuestador.");
     return ok;
   };
 
@@ -117,11 +115,14 @@ export default function Presupuestador() {
 
   const printPDF = () => {
     if (!checkKey()) return;
-    window.print(); // Usar diálogo de impresión → “Guardar como PDF”
+    window.print(); // “Guardar como PDF”
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4 md:p-6 bg-slate-900/50 rounded-2xl border border-slate-700 text-slate-100">
+    <div
+      id="presupuestador"
+      className="max-w-4xl mx-auto p-4 md:p-6 bg-slate-900/50 rounded-2xl border border-slate-700 text-slate-100"
+    >
       {/* Encabezado */}
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
@@ -187,7 +188,7 @@ export default function Presupuestador() {
       </div>
 
       {/* Items */}
-      <div className="mt-6 bg-slate-800/60 rounded-xl border border-slate-700 overflow-hidden">
+      <div className="mt-6 bg-slate-800/60 rounded-2xl border border-slate-700 overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-slate-800/80 text-slate-300">
             <tr>
@@ -299,7 +300,7 @@ export default function Presupuestador() {
       </div>
 
       {/* Totales */}
-      <div className="mt-6 bg-slate-800/60 p-4 rounded-xl border border-slate-700">
+      <div className="mt-6 bg-slate-800/60 p-4 rounded-2xl border border-slate-700">
         <div className="flex flex-col gap-2 w-full md:w-80 ml-auto">
           <Row label="Subtotal" value={`${currency.symbol} ${fmt(totals.subtotal)}`} />
           <Row label={`Descuento (${fmt(discountPct)}%)`} value={`- ${currency.symbol} ${fmt(totals.discount)}`} />
@@ -310,7 +311,7 @@ export default function Presupuestador() {
       </div>
 
       {/* Acciones */}
-      <div className="mt-6 flex flex-wrap gap-3">
+      <div className="mt-6 flex flex-wrap gap-3 no-print">
         <button className="px-4 py-2 rounded bg-indigo-600 hover:bg-indigo-700" onClick={printPDF}>
           Imprimir / PDF
         </button>
@@ -319,7 +320,7 @@ export default function Presupuestador() {
         </button>
       </div>
 
-      {/* Estilos de inputs */}
+      {/* Estilos de inputs + reglas de impresión */}
       <style>{`
         .input {
           width: 100%;
@@ -331,13 +332,24 @@ export default function Presupuestador() {
           outline: none;
         }
         .input:focus { border-color: #6366f1; box-shadow: 0 0 0 2px rgba(99,102,241,0.3); }
+
+        /* 🖨️ Imprimir solo el #presupuestador */
         @media print {
-          body { background: #fff !important; }
-          .input, select, button { border: none !important; background: transparent !important; box-shadow: none !important; }
-          a, button { display: none !important; }
+          body * { visibility: hidden !important; }
+          #presupuestador, #presupuestador * { visibility: visible !important; }
+          #presupuestador {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            background: #fff !important;
+            color: #111 !important;
+            box-shadow: none !important;
+          }
+          .no-print { display: none !important; }
           .border, .border-slate-700 { border-color: #ddd !important; }
           .bg-slate-800\\/60, .bg-slate-900\\/50 { background: #fff !important; }
           .text-slate-100, .text-slate-200, .text-slate-300 { color: #111 !important; }
+          a, button { display: none !important; }
         }
       `}</style>
     </div>

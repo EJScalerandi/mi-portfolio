@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // ─────────────────────── Datos ───────────────────────
@@ -11,7 +11,7 @@ const projects = [
     purpose:
       "Trazabilidad y control de fabricación por secciones/subsecciones, estados en tiempo real y resúmenes por sector.",
     description:
-      "Optimiza planificación y toma de decisiones con paneles, estados y métricas por sector productivo.",
+      "Optimiza planificación y toma de decisiones con paneles, estados y métrricas por sector productivo.",
     role: "Full Stack Web Developer",
     team: "Individual",
     responsibilities: [
@@ -96,7 +96,7 @@ const projects = [
     started: "2024-11",
     purpose: "API REST para registro y gestión de clientes de seguros.",
     description:
-      "Endpoints CRUD, validaciones y modelo relacional claro como práctica técnica.",
+      "Prueba técnica 48hs. Aprendizaje de tecnologías nuevas para cumplir requisitos. Mayor foco en base de datos; deploy en entorno gratuito.",
     role: "Backend Developer",
     team: "Individual",
     responsibilities: [
@@ -108,28 +108,27 @@ const projects = [
     repo: "https://github.com/EJScalerandi/BackFicticia",
     deploy: "https://proyecto-ficticia-78jw.vercel.app/",
     highlights: ["Validaciones robustas", "Modelo limpio", "Control de errores"]
-  },{
-  slug: "presupuestador",
-  title: "Presupuestador Freelance",
-  period: "Ago 2025 – Actualidad",
-  started: "2025-08",
-  purpose: "Herramienta propia para armar presupuestos de servicios freelance.",
-  description:
-    "Aplicación que permite calcular costos y generar presupuestos exportables para clientes.",
-  role: "Full Stack Web Developer",
-  team: "Individual",
-  responsibilities: [
-    "Formulario de servicios y precios",
-    "Cálculo automático de totales",
-    "Exportación de presupuesto a PDF"
-  ],
-  tech: ["React", "Tailwind", "Framer Motion"],
-  repo: "",
-  deploy: "/presupuestador",   // 👈 importante: ruta interna
-  highlights: ["Automatiza presupuestos", "Ahorra tiempo", "Personalizable"]
-}
-
-
+  },
+  {
+    slug: "presupuestador",
+    title: "Presupuestador Freelance",
+    period: "Ago 2025 – Actualidad",
+    started: "2025-08",
+    purpose: "Herramienta propia para armar presupuestos de servicios freelance.",
+    description:
+      "Calcula costos, totales y genera presupuestos exportables para clientes.",
+    role: "Full Stack Web Developer",
+    team: "Individual",
+    responsibilities: [
+      "Formulario de servicios y precios",
+      "Cálculo automático de totales",
+      "Exportación de presupuesto a PDF/JSON"
+    ],
+    tech: ["React", "Tailwind", "Framer Motion"],
+    repo: "",
+    deploy: "/presupuestador",
+    highlights: ["Automatiza presupuestos", "Ahorra tiempo", "Personalizable"]
+  }
 ];
 
 // ─────────────────────── Auxiliares ───────────────────────
@@ -155,12 +154,19 @@ function formatYM(ym) {
 export default function Projects() {
   const [selected, setSelected] = useState(null);
 
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && setSelected(null);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   const handleOpen = (p) => setSelected(p);
 
   return (
     <section className="max-w-6xl mx-auto my-20 px-4 text-center">
       <h2 className="text-4xl font-bold mb-12 text-blue-100 drop-shadow-md">Proyectos</h2>
 
+      {/* Grid de tarjetas */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 place-items-center">
         {projects.map((p, iProj) => {
           const techs = uniqStr(p.tech);
@@ -170,33 +176,28 @@ export default function Projects() {
               key={cardKey}
               type="button"
               onClick={() => handleOpen(p)}
-              whileHover={{ scale: 1.06 }}
+              whileHover={{ scale: 1.04 }}
               transition={{ type: "spring", stiffness: 260, damping: 18 }}
               className="group relative w-80 h-80 rounded-2xl overflow-hidden ring-1 ring-white/10 
                          bg-gradient-to-br from-slate-800/70 via-slate-900/70 to-black/60
                          backdrop-blur-[1px] shadow-lg transition-colors duration-300 text-center"
             >
-              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="relative z-10 h-full flex flex-col justify-between p-4 text-slate-100 group-hover:text-slate-800 transition-colors duration-300">
+              <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors duration-300" />
+              <div className="relative z-10 h-full flex flex-col justify-between p-4 text-slate-100">
                 <div>
-                  <h3 className="text-xl font-extrabold tracking-tight text-center">{p.title}</h3>
-                  <p className="mt-1 text-xs opacity-80 text-center">{p.period}</p>
-                  <p className="mt-3 text-sm opacity-90 line-clamp-3">{p.description}</p>
+                  <h3 className="text-xl font-extrabold tracking-tight">{p.title}</h3>
+                  <p className="mt-1 text-xs opacity-80">{p.period}</p>
+                  <p className="mt-3 text-sm opacity-90 line-clamp-4">{p.description}</p>
                 </div>
-                <div>
-                  <div className="flex flex-wrap gap-2 mt-3 justify-center">
-                    {techs.map((t, iTech) => (
-                      <span
-                        key={`${cardKey}-tech-${iTech}`}
-                        className="px-2 py-0.5 text-xs rounded-full
-                                   bg-white/15 group-hover:bg-slate-900/10
-                                   text-slate-100 group-hover:text-slate-800
-                                   ring-1 ring-white/10 group-hover:ring-slate-300 transition-colors"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
+                <div className="flex flex-wrap gap-2 mt-3 justify-center">
+                  {techs.map((t, iTech) => (
+                    <span
+                      key={`${cardKey}-tech-${iTech}`}
+                      className="px-2 py-0.5 text-xs rounded-full bg-white/15 text-slate-100 ring-1 ring-white/10"
+                    >
+                      {t}
+                    </span>
+                  ))}
                 </div>
               </div>
               <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-white/10 group-hover:ring-slate-300" />
@@ -207,6 +208,7 @@ export default function Projects() {
         })}
       </div>
 
+      {/* Modal mejorado */}
       <AnimatePresence>
         {selected && (
           <motion.div
@@ -217,96 +219,124 @@ export default function Projects() {
           >
             <motion.div
               key="modal"
-              className="w-full max-w-xl rounded-2xl bg-white text-slate-900 shadow-2xl relative"
+              className="w-full max-w-3xl rounded-2xl bg-white text-slate-900 shadow-2xl relative overflow-hidden"
               initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h3 className="text-2xl font-extrabold">{selected.title}</h3>
-                    <p className="text-sm text-slate-500">{selected.period}</p>
-                  </div>
-                  <button
-                    onClick={() => setSelected(null)}
-                    className="rounded-md px-2 py-1 text-slate-500 hover:text-slate-800"
-                    aria-label="Cerrar"
-                  >
-                    ✕
-                  </button>
-                </div>
+              {/* Header con gradient y chips */}
+              <div className="relative">
+                <div className="h-28 bg-gradient-to-r from-gray-900 via-gray-600 to-gray-300" />
 
-                <div className="mt-4 space-y-3">
-                  <InfoRow label="Inicio" value={formatYM(selected.started)} />
-                  {selected.role ? <InfoRow label="Rol" value={selected.role} /> : null}
-                  {selected.team ? <InfoRow label="Equipo" value={selected.team} /> : null}
-                  <InfoRow label="Propósito" value={selected.purpose} />
-                  <InfoRow label="Descripción" value={selected.description} />
-
-                  {Array.isArray(selected.responsibilities) && selected.responsibilities.length > 0 ? (
-                    <div>
-                      <p className="text-sm font-semibold mb-1">Responsabilidades</p>
-                      <ul className="list-disc pl-5 text-sm space-y-1">
-                        {selected.responsibilities.map((r, i) => (
-                          <li key={`${selected.slug}-resp-${i}`}>{r}</li>
+                <div className="absolute inset-x-0 -bottom-8 px-6">
+                  <div className="bg-white rounded-xl border border-slate-200 shadow-md p-4">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                      <div>
+                        <h3 className="text-2xl font-extrabold tracking-tight">{selected.title}</h3>
+                        <p className="text-sm text-slate-500">{selected.period}</p>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {uniqStr(selected.tech).slice(0, 5).map((t, i) => (
+                          <span key={`${selected.slug}-toptech-${i}`} className="px-2 py-0.5 text-xs rounded-full bg-slate-100 text-slate-700 ring-1 ring-slate-200">
+                            {t}
+                          </span>
                         ))}
-                      </ul>
-                    </div>
-                  ) : null}
-
-                  <div>
-                    <p className="text-sm font-semibold mb-1">Tecnologías</p>
-                    <div className="flex flex-wrap gap-2">
-                      {uniqStr(selected.tech).map((t, i) => (
-                        <span
-                          key={`${selected.slug}-tech-${i}`}
-                          className="px-2 py-0.5 text-xs rounded-full bg-slate-900/10 text-slate-800 ring-1 ring-slate-300"
-                        >
-                          {t}
-                        </span>
-                      ))}
+                        {uniqStr(selected.tech).length > 5 && (
+                          <span className="px-2 py-0.5 text-xs rounded-full bg-slate-100 text-slate-700 ring-1 ring-slate-200">
+                            +{uniqStr(selected.tech).length - 5}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
-
-                  {Array.isArray(selected.highlights) && selected.highlights.length > 0 ? (
-                    <div>
-                      <p className="text-sm font-semibold mb-1">Puntos clave</p>
-                      <ul className="list-disc pl-5 text-sm space-y-1">
-                        {selected.highlights.map((h, i) => (
-                          <li key={`${selected.slug}-hl-${i}`}>{h}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
                 </div>
+                <button
+                  onClick={() => setSelected(null)}
+                  className="absolute top-3 right-3 inline-flex items-center justify-center rounded-full w-9 h-9 bg-white/90 hover:bg-white text-slate-700 shadow"
+                  aria-label="Cerrar"
+                  title="Cerrar (Esc)"
+                >
+                  ✕
+                </button>
+              </div>
 
-                <div className="mt-6 flex items-center justify-end gap-3">
-                  {selected.repo ? (
-                    <a
-                      href={selected.repo}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 border border-slate-300 hover:bg-slate-50"
-                    >
-                      Repositorio
-                    </a>
-                  ) : null}
-                  {selected.deploy ? (
-                    <a
-                      href={selected.deploy}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 bg-slate-900 text-white hover:bg-slate-700"
-                    >
-                      Visitar sitio
-                    </a>
-                  ) : null}
-                  <button
-                    onClick={() => setSelected(null)}
-                    className="rounded-md px-3 py-1.5 border border-slate-300 hover:bg-slate-50"
-                  >
-                    Cerrar
-                  </button>
+              {/* Contenido */}
+              <div className="pt-12 px-6 pb-6">
+                <div className="grid md:grid-cols-3 gap-6">
+                  {/* Columna izquierda (detalles) */}
+                  <div className="md:col-span-2 space-y-4">
+                    <p className="text-sm text-slate-700">{selected.description}</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <InfoRow label="Inicio" value={formatYM(selected.started)} />
+                      {selected.role ? <InfoRow label="Rol" value={selected.role} /> : null}
+                      {selected.team ? <InfoRow label="Equipo" value={selected.team} /> : null}
+                      <InfoRow label="Propósito" value={selected.purpose} />
+                    </div>
+
+                    {Array.isArray(selected.responsibilities) && selected.responsibilities.length > 0 && (
+                      <div>
+                        <p className="text-sm font-semibold mb-2">Responsabilidades</p>
+                        <ul className="list-disc pl-5 text-sm space-y-1">
+                          {selected.responsibilities.map((r, i) => (
+                            <li key={`${selected.slug}-resp-${i}`}>{r}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {Array.isArray(selected.highlights) && selected.highlights.length > 0 && (
+                      <div>
+                        <p className="text-sm font-semibold mb-2">Puntos clave</p>
+                        <ul className="list-disc pl-5 text-sm space-y-1">
+                          {selected.highlights.map((h, i) => (
+                            <li key={`${selected.slug}-hl-${i}`}>{h}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Columna derecha (sidebar) */}
+                  <aside className="space-y-4">
+                    <div className="rounded-xl border border-slate-200 p-4">
+                      <p className="text-sm font-semibold mb-2">Tecnologías</p>
+                      <div className="flex flex-wrap gap-2">
+                        {uniqStr(selected.tech).map((t, i) => (
+                          <span
+                            key={`${selected.slug}-tech-${i}`}
+                            className="px-2 py-0.5 text-xs rounded-full bg-slate-100 text-slate-800 ring-1 ring-slate-200"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="rounded-xl border border-slate-200 p-4">
+                      <p className="text-sm font-semibold mb-2">Acciones</p>
+                      <div className="flex flex-wrap gap-2">
+                        {selected.repo ? (
+                          <a
+                            href={selected.repo}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 border border-slate-300 hover:bg-slate-50 text-sm"
+                          >
+                            <span>🗂️</span> Repositorio
+                          </a>
+                        ) : null}
+                        {selected.deploy ? (
+                          <a
+                            href={selected.deploy}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 bg-slate-900 text-white hover:bg-slate-700 text-sm"
+                          >
+                            <span>🔗</span> Visitar sitio
+                          </a>
+                        ) : null}
+                      </div>
+                    </div>
+                  </aside>
                 </div>
               </div>
             </motion.div>

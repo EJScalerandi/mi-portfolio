@@ -108,7 +108,28 @@ const projects = [
     repo: "https://github.com/EJScalerandi/BackFicticia",
     deploy: "https://proyecto-ficticia-78jw.vercel.app/",
     highlights: ["Validaciones robustas", "Modelo limpio", "Control de errores"]
-  }
+  },{
+  slug: "presupuestador",
+  title: "Presupuestador Freelance",
+  period: "Ago 2025 – Actualidad",
+  started: "2025-08",
+  purpose: "Herramienta propia para armar presupuestos de servicios freelance.",
+  description:
+    "Aplicación que permite calcular costos y generar presupuestos exportables para clientes.",
+  role: "Full Stack Web Developer",
+  team: "Individual",
+  responsibilities: [
+    "Formulario de servicios y precios",
+    "Cálculo automático de totales",
+    "Exportación de presupuesto a PDF"
+  ],
+  tech: ["React", "Tailwind", "Framer Motion"],
+  repo: "",
+  deploy: "/presupuestador",   // 👈 importante: ruta interna
+  highlights: ["Automatiza presupuestos", "Ahorra tiempo", "Personalizable"]
+}
+
+
 ];
 
 // ─────────────────────── Auxiliares ───────────────────────

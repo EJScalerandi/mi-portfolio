@@ -154,6 +154,12 @@ export default function ChatWidg() {
                   {loading ? "Enviando…" : "Enviar"}
                 </button>
               </div>
+
+              {/* Leyenda aclaratoria */}
+              <p className="mt-2 text-[11px] text-slate-400 leading-snug text-center">
+                ⚠️ Este chat simula ser Esteban con IA.<br />
+                Es una versión <strong>Free</strong>, sus respuestas no tienen respaldo alguno.
+              </p>
             </form>
           </motion.div>
         )}

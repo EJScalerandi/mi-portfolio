@@ -4,9 +4,29 @@ import { motion, AnimatePresence } from "framer-motion";
 // ─────────────────────── Datos ───────────────────────
 const projects = [
   {
-    slug: "degrandis",
+    slug: "Odoo DeGrandis Portones",
+    title: "Implementación ERP ODOO Enterprise",
+    period: "Agos 2025 – Actualidad",
+    started: "2025-04",
+    purpose:
+      "Integración y reemplado de diferentes software para lograr integración",
+    description:
+      "Implementación de Odoo, comenzando con el módulo de contabilidad, inventario y productos. De manera gradual se irán reemplazando los sistemas que se utilizan actualmente por la modularización que ofrece Odoo",
+    role: "Full Stack Web Developer",
+    team: "Individual",
+    responsibilities: [
+      "GitHub",
+      "Python",
+      "Integración Odoo"
+    ],
+    tech: ["Python, Odoo Studio"],
+    repo: "",
+    deploy: "",
+    highlights: ["Integracion", "Odoo sistema", "Optimización flujo de trabajo"]
+  },{
+    slug: "De Grandis Portones",
     title: "Sistema Interno de Producción",
-    period: "Abr 2025 – Actualidad",
+    period: "Abr 2025 – Jun 2025",
     started: "2025-04",
     purpose:
       "Trazabilidad y control de fabricación por secciones/subsecciones, estados en tiempo real y resúmenes por sector.",
@@ -27,13 +47,13 @@ const projects = [
   },
   {
     slug: "msf",
-    title: "Micrositio MSF LATAM",
+    title: "Micrositio Medicos sin Fronteras LATAM",
     period: "Ene 2025 – Actualidad",
     started: "2025-01",
     purpose:
       "Backend y base de datos alineado a la identidad visual de Médicos Sin Fronteras LATAM.",
     description:
-      "Diseño del modelo de datos, consultas optimizadas y servidor PHP sobre Apache.",
+      "Diseño del modelo de datos, consultas optimizadas y servidor PHP sobre Apache para micrositio de médicos sin fronteras, montando un mmanual de marcas que se utiliza en todo latinoamérica.",
     role: "Full Stack Web Developer (Pasantía no rentada)",
     team: "Individual / Colaborativo",
     responsibilities: [
@@ -112,11 +132,11 @@ const projects = [
   {
     slug: "presupuestador",
     title: "Presupuestador Freelance",
-    period: "Ago 2025 – Actualidad",
+    period: "Ago 2025 – Ago 2025",
     started: "2025-08",
     purpose: "Herramienta propia para armar presupuestos de servicios freelance.",
     description:
-      "Calcula costos, totales y genera presupuestos exportables para clientes.",
+      "Calcula costos, totales y genera presupuestos exportables para clientes. Es un presupuestador hecho para ofrecer el servicio de freelance a clientes que lo requieran.",
     role: "Full Stack Web Developer",
     team: "Individual",
     responsibilities: [
@@ -128,7 +148,36 @@ const projects = [
     repo: "",
     deploy: "/presupuestador",
     highlights: ["Automatiza presupuestos", "Ahorra tiempo", "Personalizable"]
-  }
+  },{
+  slug: "portfolio",
+  title: "Portfolio + Chatbot (FullStack)",
+  period: "Ago 2025 – Actualidad",
+  started: "2025-08",
+  purpose: "Sitio personal con presentación, proyectos y widget de chat conectado a API propia.",
+  description:
+    "SPA con React + Vite y Tailwind; animaciones con Framer Motion. Chat embebido que consume un backend serverless en Vercel (OpenRouter) con CORS configurado y system prompt personalizado. Incluye Presupuestador en /presupuestador.",
+  role: "Full Stack Web Developer",
+  team: "Individual",
+  responsibilities: [
+    "UI/UX y layout responsivo (Tailwind + Framer Motion)",
+    "Widget de chat con historial y abort controller",
+    "Backend serverless en Vercel que proxea OpenRouter con fallback de modelo",
+    "CORS y preflight ajustados; health-check",
+    "CI/CD con Vercel y variables de entorno"
+  ],
+  tech: [
+    "React", "Vite", "Tailwind", "Framer Motion",
+    "Node.js", "Vercel Functions", "OpenRouter", "CORS"
+  ],
+  repo: "https://github.com/EJScalerandi/mi-portfolio",
+  deploy: "/", // ruta interna al home
+  highlights: [
+    "Widget de chat integrado",
+    "Presupuestador en /presupuestador",
+    "Backend propio (OpenRouter) y CORS"
+  ]
+}
+
 ];
 
 // ─────────────────────── Auxiliares ───────────────────────

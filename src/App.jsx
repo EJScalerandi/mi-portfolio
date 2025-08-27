@@ -9,6 +9,8 @@ import CursorSpark from "./components/CursorSpark";
 import galaxi from "./assets/Galaxy2.png";
 import ChatWidg from "./components/ChatWidgets";
 import Presupuestador from "./components/Presupuestador";
+import { I18nProvider } from "./i18n";
+import TranslateButton from "./components/TranslateButton";
 
 function Home() {
   return (
@@ -23,33 +25,35 @@ function Home() {
 }
 
 export default function App() {
-  // Parallax más suave en pantallas chicas
   const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 640px)").matches;
   const isTablet = typeof window !== "undefined" && window.matchMedia("(max-width: 1024px)").matches;
   const strength = isMobile ? 8 : isTablet ? 20 : 40;
   const { x, y } = useParallax(strength);
 
   return (
-    <motion.div
-      className="min-h-screen flex flex-col overflow-x-hidden relative"
-      style={{
-        backgroundImage: `url(${galaxi}), linear-gradient(to bottom, #011627cc, #000000cc)`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundPositionX: `${50 + x}%`,
-        backgroundPositionY: `${50 + y}%`,
-      }}
-    >
-      <Header />
+    <I18nProvider>
+      <motion.div
+        className="min-h-screen flex flex-col overflow-x-hidden relative"
+        style={{
+          backgroundImage: `url(${galaxi}), linear-gradient(to bottom, #011627cc, #000000cc)`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundPositionX: `${50 + x}%`,
+          backgroundPositionY: `${50 + y}%`,
+        }}
+      >
+        <Header />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/presupuestador" element={<Presupuestador />} />
-      </Routes>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/presupuestador" element={<Presupuestador />} />
+        </Routes>
 
-      <ChatWidg />
-      <CursorSpark />
-    </motion.div>
+        <TranslateButton />
+        <ChatWidg />
+        <CursorSpark />
+      </motion.div>
+    </I18nProvider>
   );
 }

@@ -1,8 +1,10 @@
 import { FaWhatsapp, FaLinkedin, FaGithub } from "react-icons/fa";
 import { useI18n, pickByLang } from "../i18n";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
-  const { lang } = useI18n();
+  const { lang, t } = useI18n();
+  const navigate = useNavigate();
 
   const content = {
     name: "Esteban Javier Scalerandi",
@@ -14,6 +16,11 @@ export default function Header() {
     linkedin_en: "LinkedIn",
     github: "GitHub",
     github_en: "GitHub",
+  };
+
+  const openPersonal = () => {
+    // Abre en pestaña nueva la ruta /personal
+    window.open("/personal", "_blank");
   };
 
   return (
@@ -41,7 +48,6 @@ export default function Header() {
           text-center shadow-xl backdrop-blur-sm border-b border-blue-900 z-10
         "
       >
-        {/* Nombre */}
         <h1
           className="
             text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight
@@ -51,20 +57,12 @@ export default function Header() {
           {content.name}
         </h1>
 
-        {/* Rol */}
         <p className="text-lg sm:text-xl mt-2 font-semibold text-blue-300 relative z-10">
           {pickByLang(content, "role", lang)}
         </p>
 
-        {/* Contacto: en mobile apila, en sm+ usa fila con separadores */}
-        <div
-          className="
-            mt-4 relative z-10
-            flex flex-col items-center gap-2
-            sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4
-            text-slate-300
-          "
-        >
+        {/* Fila superior de acciones */}
+        <div className="mt-4 relative z-10 flex flex-col items-center gap-2 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
           <span className="text-sm sm:text-base">{pickByLang(content, "location", lang)}</span>
 
           <span className="hidden sm:inline text-slate-400">|</span>
@@ -89,15 +87,8 @@ export default function Header() {
           </a>
         </div>
 
-        {/* Redes: en mobile apila; en sm+ fila con separadores */}
-        <div
-          className="
-            mt-3 relative z-10
-            flex flex-col items-center gap-2
-            sm:flex-row sm:flex-wrap sm:justify-center sm:gap-6
-            text-slate-200
-          "
-        >
+        {/* Redes + botón Más personal */}
+        <div className="mt-3 relative z-10 flex flex-col items-center gap-2 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-6">
           <a
             href="https://www.linkedin.com/in/esteban-javier-scalerandi-807386277"
             target="_blank"
@@ -119,6 +110,15 @@ export default function Header() {
             <FaGithub className="shrink-0" />
             <span>{pickByLang(content, "github", lang)}</span>
           </a>
+
+          <span className="hidden sm:inline text-slate-400">|</span>
+
+          <button
+            onClick={openPersonal}
+            className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 bg-white/90 hover:bg-white text-slate-800 shadow ring-1 ring-slate-300 text-sm sm:text-base"
+          >
+            {t("morePersonal")}
+          </button>
         </div>
       </header>
     </>

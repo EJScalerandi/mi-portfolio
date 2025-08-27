@@ -11,6 +11,7 @@ import ChatWidg from "./components/ChatWidgets";
 import Presupuestador from "./components/Presupuestador";
 import { I18nProvider } from "./i18n";
 import TranslateButton from "./components/TranslateButton";
+import PersonalGallery from "./components/PersonalGallery";
 
 function Home() {
   return (
@@ -48,6 +49,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/presupuestador" element={<Presupuestador />} />
+          <Route path="/personal" element={<PersonalGallery />} />
         </Routes>
 
         <TranslateButton />

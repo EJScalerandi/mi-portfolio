@@ -16,6 +16,9 @@ const STRINGS = {
     actions: "Acciones",
     repository: "Repositorio",
     visit: "Visitar sitio",
+    morePersonal: "Más personal",
+    previous: "Anterior",
+    next: "Siguiente",
   },
   en: {
     projects: "Projects",
@@ -30,6 +33,9 @@ const STRINGS = {
     actions: "Actions",
     repository: "Repository",
     visit: "Visit site",
+    morePersonal: "More personal",
+    previous: "Previous",
+    next: "Next",
   },
 };
 
@@ -47,7 +53,6 @@ export function useI18n() {
   return useContext(I18nContext);
 }
 
-/** Obtiene p[field_en] si lang==='en' y existe, si no p[field] */
 export function pickByLang(obj, field, lang) {
   if (!obj) return "";
   if (lang === "en" && obj[`${field}_en`]) return obj[`${field}_en`];

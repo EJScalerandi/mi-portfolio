@@ -1,37 +1,62 @@
+// src/components/PersonalGallery.jsx
 import { useEffect, useRef, useState } from "react";
-import { useI18n } from "../i18n";
+import { useI18n, pickByLang } from "../i18n";
 
-/**
- * Cómo cargar tus imágenes:
- * - Ponelas en /public/personal/imagen1.jpg, imagen2.jpg, etc.
- * - Lista sus rutas en el array IMAGES.
- */
-const IMAGES = [
-  "/personal/Galaxi.png",
-  "/personal/jupiter.png",
-  "/personal/sun.jpeg",
-  "/personal/venus.png",
+const SLIDES = [
+  {
+    src: "/personal/Galaxi.png",
+    title: "Vía Láctea",
+    title_en: "Milky Way",
+    text:
+      "Foto que me inspira para experimentar con UI/UX y fondos parallax en mis proyectos.",
+    text_en:
+      "Photo that inspires me to experiment with UI/UX and parallax backgrounds in my projects.",
+  },
+  {
+    src: "/personal/jupiter.png",
+    title: "Júpiter",
+    title_en: "Jupiter",
+    text:
+      "Me recuerda que los sistemas complejos pueden ser bellos si se modelan bien.",
+    text_en:
+      "Reminds me that complex systems can be beautiful when modeled well.",
+  },
+  {
+    src: "/personal/sun.jpeg",
+    title: "Sol",
+    title_en: "Sun",
+    text:
+      "Un toque de energía: foco en rendimiento, accesibilidad y DX para construir sólido.",
+    text_en:
+      "A spark of energy: focus on performance, accessibility and DX to build solid products.",
+  },
+  {
+    src: "/personal/venus.png",
+    title: "Venus",
+    title_en: "Venus",
+    text:
+      "Cada detalle cuenta: pequeñas mejoras visuales pueden cambiar toda la percepción.",
+    text_en:
+      "Every detail counts: small visual tweaks can change overall perception.",
+  },
 ];
 
-
 export default function PersonalGallery() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const timerRef = useRef(null);
 
-  const clamp = (i) => (IMAGES.length ? (i + IMAGES.length) % IMAGES.length : 0);
+  const clamp = (i) => (SLIDES.length ? (i + SLIDES.length) % SLIDES.length : 0);
   const next = () => setIndex((i) => clamp(i + 1));
   const prev = () => setIndex((i) => clamp(i - 1));
 
-  // Autoplay cada 5s (pausa si hovered/touched)
   useEffect(() => {
-    if (paused || IMAGES.length <= 1) return;
+    if (paused || SLIDES.length <= 1) return;
     timerRef.current = setInterval(next, 5000);
     return () => clearInterval(timerRef.current);
   }, [paused]);
 
-  // Pausa con teclado y flechas
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "ArrowRight") { setPaused(true); next(); }
@@ -42,7 +67,6 @@ export default function PersonalGallery() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Swipe en mobile
   const touchStart = useRef(null);
   const onTouchStart = (e) => {
     setPaused(true);
@@ -52,16 +76,13 @@ export default function PersonalGallery() {
     const start = touchStart.current;
     if (start == null) return;
     const dx = e.changedTouches[0].clientX - start;
-    if (Math.abs(dx) > 40) {
-      if (dx < 0) next();
-      else prev();
-    }
+    if (Math.abs(dx) > 40) (dx < 0 ? next() : prev());
     setPaused(false);
     touchStart.current = null;
   };
 
   return (
-    <section className="mx-auto my-12 sm:my-16 lg:my-20 px-3 sm:px-6 max-w-5xl">
+    <section className="mx-auto my-12 sm:my-16 lg:my-20 px-3 sm:px-6 max-w-6xl">
       <div
         className="relative rounded-2xl overflow-hidden bg-black/30 ring-1 ring-white/10 shadow-xl"
         onMouseEnter={() => setPaused(true)}
@@ -75,22 +96,38 @@ export default function PersonalGallery() {
             className="flex transition-transform duration-700 ease-in-out"
             style={{ transform: `translateX(-${index * 100}%)` }}
           >
-            {IMAGES.map((src, i) => (
-              <div key={src + i} className="w-full shrink-0 aspect-video bg-black/60 flex items-center justify-center">
-                {/* imagen */}
-                <img
-                  src={src}
-                  alt={`slide-${i}`}
-                  className="w-full h-full object-contain md:object-cover"
-                  draggable={false}
-                  loading="lazy"
-                />
+            {SLIDES.map((s, i) => (
+              <div key={s.src + i} className="w-full shrink-0">
+                {/* Imagen izquierda + texto derecha */}
+                <div className="grid md:grid-cols-2 gap-0">
+                  {/* Contenedor de IMAGEN con altura fija responsive */}
+                  <div className="relative overflow-hidden bg-black/60
+                                  h-[260px] sm:h-[320px] md:h-[420px] lg:h-[520px]">
+                    <img
+                      src={s.src}
+                      alt={pickByLang(s, "title", lang) || `slide-${i}`}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      draggable={false}
+                      loading="lazy"
+                    />
+                  </div>
+
+                  {/* Texto */}
+                  <aside className="p-4 sm:p-6 md:p-8 bg-white/90 text-slate-900 flex flex-col justify-center">
+                    <h3 className="text-xl sm:text-2xl font-bold mb-2">
+                      {pickByLang(s, "title", lang)}
+                    </h3>
+                    <p className="text-sm sm:text-base leading-relaxed">
+                      {pickByLang(s, "text", lang)}
+                    </p>
+                  </aside>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Flechas laterales */}
+        {/* Flechas */}
         <button
           onClick={() => { setPaused(true); prev(); }}
           aria-label={t("previous")}
@@ -108,9 +145,9 @@ export default function PersonalGallery() {
           ›
         </button>
 
-        {/* Indicadores + estado de pausa */}
+        {/* Dots */}
         <div className="absolute bottom-2 left-0 right-0 flex items-center justify-center gap-2">
-          {IMAGES.map((_, i) => (
+          {SLIDES.map((_, i) => (
             <button
               key={i}
               onClick={() => { setPaused(true); setIndex(i); }}
@@ -120,12 +157,10 @@ export default function PersonalGallery() {
           ))}
         </div>
 
+        {/* Indicador de pausa (opcional) */}
         {paused && (
           <div className="absolute inset-0 pointer-events-none flex items-start justify-end p-2 sm:p-3">
-            <span className="text-[10px] sm:text-xs bg-black/50 text-white px-2 py-1 rounded">
-              {/** Info visual de pausa, opcional */}
-              ⏸
-            </span>
+            <span className="text-[10px] sm:text-xs bg-black/50 text-white px-2 py-1 rounded">⏸</span>
           </div>
         )}
       </div>

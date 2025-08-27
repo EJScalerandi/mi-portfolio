@@ -1,10 +1,9 @@
 import { FaWhatsapp, FaLinkedin, FaGithub } from "react-icons/fa";
 import { useI18n, pickByLang } from "../i18n";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const { lang, t } = useI18n();
-  const navigate = useNavigate();
 
   const content = {
     name: "Esteban Javier Scalerandi",
@@ -19,7 +18,6 @@ export default function Header() {
   };
 
   const openPersonal = () => {
-    // Abre en pestaña nueva la ruta /personal
     window.open("/personal", "_blank");
   };
 
@@ -48,25 +46,26 @@ export default function Header() {
           text-center shadow-xl backdrop-blur-sm border-b border-blue-900 z-10
         "
       >
-        <h1
+        {/* Nombre con link a "/" */}
+        <Link
+          to="/"
           className="
             text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight
             drop-shadow-[0_0_10px_rgba(100,149,237,0.5)] relative z-10
+            hover:text-blue-300 transition
           "
         >
           {content.name}
-        </h1>
+        </Link>
 
         <p className="text-lg sm:text-xl mt-2 font-semibold text-blue-300 relative z-10">
           {pickByLang(content, "role", lang)}
         </p>
 
-        {/* Fila superior de acciones */}
+        {/* Contacto */}
         <div className="mt-4 relative z-10 flex flex-col items-center gap-2 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
           <span className="text-sm sm:text-base">{pickByLang(content, "location", lang)}</span>
-
           <span className="hidden sm:inline text-slate-400">|</span>
-
           <a
             href="https://wa.me/543572400170"
             target="_blank"
@@ -76,9 +75,7 @@ export default function Header() {
             <FaWhatsapp className="shrink-0" />
             <span>3572-400170</span>
           </a>
-
           <span className="hidden sm:inline text-slate-400">|</span>
-
           <a
             href="mailto:estebanscalerandi.dev@gmail.com"
             className="underline hover:text-blue-400 transition break-all text-sm sm:text-base"
@@ -98,9 +95,7 @@ export default function Header() {
             <FaLinkedin className="shrink-0" />
             <span>{pickByLang(content, "linkedin", lang)}</span>
           </a>
-
           <span className="hidden sm:inline text-slate-400">|</span>
-
           <a
             href="https://github.com/EJScalerandi"
             target="_blank"
@@ -110,9 +105,7 @@ export default function Header() {
             <FaGithub className="shrink-0" />
             <span>{pickByLang(content, "github", lang)}</span>
           </a>
-
           <span className="hidden sm:inline text-slate-400">|</span>
-
           <button
             onClick={openPersonal}
             className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 bg-white/90 hover:bg-white text-slate-800 shadow ring-1 ring-slate-300 text-sm sm:text-base"

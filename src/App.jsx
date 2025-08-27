@@ -12,9 +12,9 @@ import Presupuestador from "./components/Presupuestador";
 
 function Home() {
   return (
-    <main className="flex-grow max-w-5xl mx-auto w-full px-4 relative z-10">
+    <main className="flex-grow w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
       <About />
-      <div className="mt-16">
+      <div className="mt-10 sm:mt-12 lg:mt-16">
         <Projects />
       </div>
       <Footer />
@@ -23,11 +23,15 @@ function Home() {
 }
 
 export default function App() {
-  const { x, y } = useParallax(40);
+  // Parallax más suave en pantallas chicas
+  const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 640px)").matches;
+  const isTablet = typeof window !== "undefined" && window.matchMedia("(max-width: 1024px)").matches;
+  const strength = isMobile ? 8 : isTablet ? 20 : 40;
+  const { x, y } = useParallax(strength);
 
   return (
     <motion.div
-      className="min-h-screen flex flex-col overflow-hidden relative"
+      className="min-h-screen flex flex-col overflow-x-hidden relative"
       style={{
         backgroundImage: `url(${galaxi}), linear-gradient(to bottom, #011627cc, #000000cc)`,
         backgroundRepeat: "no-repeat",

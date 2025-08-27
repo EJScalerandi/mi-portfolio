@@ -1,9 +1,10 @@
 import { FaWhatsapp, FaLinkedin, FaGithub } from "react-icons/fa";
 import { useI18n, pickByLang } from "../i18n";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Header() {
   const { lang, t } = useI18n();
+  const navigate = useNavigate();
 
   const content = {
     name: "Esteban Javier Scalerandi",
@@ -17,8 +18,8 @@ export default function Header() {
     github_en: "GitHub",
   };
 
-  const openPersonal = () => {
-    window.open("/personal", "_blank");
+  const goPersonal = () => {
+    navigate("/personal");
   };
 
   return (
@@ -107,7 +108,7 @@ export default function Header() {
           </a>
           <span className="hidden sm:inline text-slate-400">|</span>
           <button
-            onClick={openPersonal}
+            onClick={goPersonal}
             className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 bg-white/90 hover:bg-white text-slate-800 shadow ring-1 ring-slate-300 text-sm sm:text-base"
           >
             {t("morePersonal")}

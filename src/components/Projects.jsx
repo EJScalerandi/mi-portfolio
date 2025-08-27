@@ -1,9 +1,10 @@
+// src/components/Projects.jsx
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 import { useI18n, pickByLang } from "../i18n";
 
 // ─────────────────────── Datos ───────────────────────
-// Agregué campos *_en para cada proyecto. Si falta alguno, cae al español.
 const projects = [
   {
     slug: "Odoo DeGrandis Portones",
@@ -516,15 +517,26 @@ export default function Projects() {
                             <span>🗂️</span> {t("repository")}
                           </a>
                         ) : null}
+
+                        {/* 👉 Si deploy es ruta interna, usar Link (misma pestaña). Si es URL absoluta, <a target="_blank"> */}
                         {selected.deploy ? (
-                          <a
-                            href={selected.deploy}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 bg-slate-900 text-white hover:bg-slate-700 text-sm"
-                          >
-                            <span>🔗</span> {t("visit")}
-                          </a>
+                          selected.deploy.startsWith("/") ? (
+                            <Link
+                              to={selected.deploy}
+                              className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 bg-slate-900 text-white hover:bg-slate-700 text-sm"
+                            >
+                              <span>🔗</span> {t("visit")}
+                            </Link>
+                          ) : (
+                            <a
+                              href={selected.deploy}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-2 rounded-md px-3 py-1.5 bg-slate-900 text-white hover:bg-slate-700 text-sm"
+                            >
+                              <span>🔗</span> {t("visit")}
+                            </a>
+                          )
                         ) : null}
                       </div>
                     </div>

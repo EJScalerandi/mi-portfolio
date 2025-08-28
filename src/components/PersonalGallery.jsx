@@ -4,41 +4,33 @@ import { useI18n, pickByLang } from "../i18n";
 
 const SLIDES = [
   {
-    src: "/personal/Galaxi.png",
-    title: "Vía Láctea",
-    title_en: "Milky Way",
-    text:
-      "Foto que me inspira para experimentar con UI/UX y fondos parallax en mis proyectos.",
-    text_en:
-      "Photo that inspires me to experiment with UI/UX and parallax backgrounds in my projects.",
-  },
+  src: "/personal/Paisaje.jpg",
+  title: "Loquillos",
+  title_en: "The Rascals", 
+  text:
+    "Ella es mi mujer, mi amor y mi compañera para toda la vida. La foto es de un viaje que hicimos a Mendoza, Argentina. ¡Bellísimo lugar!",
+  text_en:
+    "She is my wife, my love, and my life companion. This photo is from a trip we took to Mendoza, Argentina — a beautiful place!",
+},
   {
-    src: "/personal/jupiter.png",
-    title: "Júpiter",
-    title_en: "Jupiter",
-    text:
-      "Me recuerda que los sistemas complejos pueden ser bellos si se modelan bien.",
-    text_en:
-      "Reminds me that complex systems can be beautiful when modeled well.",
-  },
+  src: "/personal/Locos.jpg",
+  title: "Locos",
+  title_en: "Crazy",
+  text:
+    "Disfrutando de las pequeñas cosas de la vida, que terminan siendo inmensas para uno.",
+  text_en:
+    "Enjoying the little things in life, which end up being immense for oneself.",
+}
+,
   {
-    src: "/personal/sun.jpeg",
-    title: "Sol",
-    title_en: "Sun",
-    text:
-      "Un toque de energía: foco en rendimiento, accesibilidad y DX para construir sólido.",
-    text_en:
-      "A spark of energy: focus on performance, accessibility and DX to build solid products.",
-  },
-  {
-    src: "/personal/venus.png",
-    title: "Venus",
-    title_en: "Venus",
-    text:
-      "Cada detalle cuenta: pequeñas mejoras visuales pueden cambiar toda la percepción.",
-    text_en:
-      "Every detail counts: small visual tweaks can change overall perception.",
-  },
+  src: "/personal/Gorda.jpg",
+  title: "Gorda",
+  title_en: "Gorda", // podés dejar igual o traducir a "Chubby"
+  text:
+    "Nuestra mascota, muy querida y amada. Ella es la verdadera ama y señora.",
+  text_en:
+    "Our pet, deeply loved and cherished. She is the true lady and queen of the house.",
+},
 ];
 
 export default function PersonalGallery() {

@@ -25,7 +25,7 @@ const SLIDES = [
   {
   src: "/personal/Gorda.jpg",
   title: "Gorda",
-  title_en: "Gorda", // podés dejar igual o traducir a "Chubby"
+  title_en: "Chubby", // podés dejar igual o traducir a "Chubby"
   text:
     "Nuestra mascota, muy querida y amada. Ella es la verdadera ama y señora.",
   text_en:

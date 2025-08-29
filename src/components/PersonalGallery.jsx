@@ -30,7 +30,16 @@ const SLIDES = [
     "Nuestra mascota, muy querida y amada. Ella es la verdadera ama y señora.",
   text_en:
     "Our pet, deeply loved and cherished. She is the true lady and queen of the house.",
+},{
+  src: "/personal/Basquet.jpg",
+  title: "Básquet NOB",
+  title_en: "Basketball NOB",
+  text:
+    "Foto junto a mi equipo de NOB de Laguna Larga. Aunque estámos ya medios pasados de edad seguimos haciendo lo ue se disfruta y llena el alma.",
+  text_en:
+     "Photo with my team NOB from Laguna Larga. Even though we are a bit past our prime, we keep doing what we enjoy and what fills our souls.",
 },
+
 ];
 
 export default function PersonalGallery() {

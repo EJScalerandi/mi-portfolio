@@ -38,6 +38,14 @@ const SLIDES = [
     "Foto junto a mi equipo de NOB de Laguna Larga. Aunque estámos ya medios pasados de edad seguimos haciendo lo ue se disfruta y llena el alma.",
   text_en:
      "Photo with my team NOB from Laguna Larga. Even though we are a bit past our prime, we keep doing what we enjoy and what fills our souls.",
+},{
+  src: "/personal/Familia.jpg",
+  title: "Familia",
+  title_en: "Family",
+  text:
+    "Esta es mi familia, no podría haber pedido algo mejor.",
+  text_en:
+    "This is my family, I couldn’t have asked for anything better.",
 },
 
 ];

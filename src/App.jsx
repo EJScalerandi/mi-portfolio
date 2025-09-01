@@ -12,11 +12,13 @@ import Presupuestador from "./components/Presupuestador";
 import { I18nProvider } from "./i18n";
 import TranslateButton from "./components/TranslateButton";
 import PersonalGallery from "./components/PersonalGallery";
+import Services from "./components/Services";
 
 function Home() {
   return (
     <main className="flex-grow w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
       <About />
+      <Services />
       <div className="mt-10 sm:mt-12 lg:mt-16">
         <Projects />
       </div>

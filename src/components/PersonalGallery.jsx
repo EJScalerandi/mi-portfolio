@@ -5,7 +5,7 @@ import { useI18n, pickByLang } from "../i18n";
 const SLIDES = [
   {
   src: "/personal/Paisaje.jpg",
-  title: "Loquillos",
+  title: "Sobre nosotros",
   title_en: "The Rascals", 
   text:
     "Ella es mi mujer, mi amor y mi compañera para toda la vida. La foto es de un viaje que hicimos a Mendoza, Argentina. ¡Bellísimo lugar!",

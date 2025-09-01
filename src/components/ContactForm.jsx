@@ -1,12 +1,14 @@
 // src/components/ContactForm.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useI18n } from "../i18n";
 
 export default function ContactForm() {
-  const { t, lang } = useI18n();
+  const { lang } = useI18n();
   const [form, setForm] = useState({ name: "", email: "", message: "", hp: "" });
   const [state, setState] = useState({ loading: false, ok: null, error: "" });
+  const [cooldown, setCooldown] = useState(0); // segundos restantes
 
+  // 🔹 Mensajes traducidos
   const L = {
     title: { es: "Contacto", en: "Contact" },
     subtitle: {
@@ -28,9 +30,20 @@ export default function ContactForm() {
     },
     required: { es: "Completa todos los campos", en: "Please fill all fields" },
     invalidEmail: { es: "Email inválido", en: "Invalid email" },
+    wait: {
+      es: "Espera",
+      en: "Wait",
+    },
   };
 
   const text = (k) => (lang === "en" ? L[k].en : L[k].es);
+
+  // 🔹 Cooldown timer
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const id = setInterval(() => setCooldown((c) => c - 1), 1000);
+    return () => clearInterval(id);
+  }, [cooldown]);
 
   const onChange = (e) =>
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
@@ -50,7 +63,8 @@ export default function ContactForm() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (!validate() || cooldown > 0) return;
+
     setState({ loading: true, ok: null, error: "" });
     try {
       const res = await fetch("/api/contact", {
@@ -62,6 +76,7 @@ export default function ContactForm() {
       if (data.ok) {
         setState({ loading: false, ok: true, error: "" });
         setForm({ name: "", email: "", message: "", hp: "" });
+        setCooldown(180); // 3 minutos = 180s
       } else {
         setState({ loading: false, ok: false, error: text("fail") });
       }
@@ -77,7 +92,7 @@ export default function ContactForm() {
         <p className="text-slate-600 mb-6">{text("subtitle")}</p>
 
         <form onSubmit={onSubmit} className="space-y-4">
-          {/* honeypot anti-spam */}
+          {/* Honeypot anti-spam */}
           <input
             type="text"
             name="hp"
@@ -88,6 +103,7 @@ export default function ContactForm() {
             autoComplete="off"
           />
 
+          {/* Nombre y Email */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium mb-1">{text("name")}</label>
@@ -112,6 +128,7 @@ export default function ContactForm() {
             </div>
           </div>
 
+          {/* Mensaje */}
           <div>
             <label className="block text-sm font-medium mb-1">{text("msg")}</label>
             <textarea
@@ -124,19 +141,21 @@ export default function ContactForm() {
             />
           </div>
 
-          {state.error && (
-            <p className="text-sm text-red-600">{state.error}</p>
-          )}
-          {state.ok && (
-            <p className="text-sm text-green-700">{text("ok")}</p>
-          )}
+          {/* Mensajes de estado */}
+          {state.error && <p className="text-sm text-red-600">{state.error}</p>}
+          {state.ok && <p className="text-sm text-green-700">{text("ok")}</p>}
 
+          {/* Botón con cooldown */}
           <button
             type="submit"
-            disabled={state.loading}
+            disabled={state.loading || cooldown > 0}
             className="inline-flex items-center justify-center rounded-lg px-4 py-2 bg-slate-900 text-white hover:bg-slate-700 disabled:opacity-60"
           >
-            {state.loading ? text("sending") : text("send")}
+            {state.loading
+              ? text("sending")
+              : cooldown > 0
+              ? `${text("wait")} ${cooldown}s`
+              : text("send")}
           </button>
         </form>
       </div>

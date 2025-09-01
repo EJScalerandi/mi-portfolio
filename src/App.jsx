@@ -13,6 +13,7 @@ import { I18nProvider } from "./i18n";
 import TranslateButton from "./components/TranslateButton";
 import PersonalGallery from "./components/PersonalGallery";
 import Services from "./components/Services";
+import ContactForm from "./components/ContactForm";
 
 function Home() {
   return (
@@ -22,6 +23,7 @@ function Home() {
       <div className="mt-10 sm:mt-12 lg:mt-16">
         <Projects />
       </div>
+      <ContactForm />
       <Footer />
     </main>
   );

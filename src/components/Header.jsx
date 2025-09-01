@@ -1,4 +1,5 @@
-import { FaWhatsapp, FaLinkedin, FaGithub } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { FaWhatsapp, FaLinkedin, FaGithub, FaDownload } from "react-icons/fa";
 import { useI18n, pickByLang } from "../i18n";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -16,11 +17,58 @@ export default function Header() {
     linkedin_en: "LinkedIn",
     github: "GitHub",
     github_en: "GitHub",
+    cv_btn: "Descargar CV",
+    cv_btn_en: "Download CV",
   };
 
-  const goPersonal = () => {
-    navigate("/personal");
+  const goPersonal = () => navigate("/personal");
+
+  // Descarga robusta (programática + fallbacks)
+  async function downloadWithFallback(paths, filename) {
+    for (const raw of paths) {
+      const urlAbs = new URL(raw, window.location.origin).toString() + `?t=${Date.now()}`;
+      try {
+        const res = await fetch(urlAbs, { cache: "no-store" });
+        if (!res.ok) continue;
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename || (raw.split("/").pop() || "cv.pdf");
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        return true;
+      } catch (_) {}
+    }
+    alert(lang === "es"
+      ? "No pude descargar el CV. Verificá que exista en /public/cv/."
+      : "Couldn't download the CV. Please ensure it exists in /public/cv/."
+    );
+    return false;
+  }
+
+  const handleDownloadCV = async () => {
+    if (lang === "en") {
+      await downloadWithFallback(
+        ["/cv/cv-en.pdf", "/cv/CV-EN.pdf", "/cv/cv_en.pdf"],
+        "CV-Esteban-EN.pdf"
+      );
+    } else {
+      await downloadWithFallback(
+        ["/cv/cv-es.pdf", "/cv/CV-ES.pdf", "/cv/cv_es.pdf"],
+        "CV-Esteban-ES.pdf"
+      );
+    }
   };
+
+  useEffect(() => {
+    // nada especial aquí; mantengo por si querés cerrar menús con Esc en el futuro
+    const onKey = (e) => { if (e.key === "Escape") {/* noop */} };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   return (
     <>
@@ -42,12 +90,13 @@ export default function Header() {
 
       <header
         className="
-          relative overflow-hidden starry-bg bg-transparent text-slate-100
+          relative starry-bg bg-transparent text-slate-100
           px-4 sm:px-6 lg:px-8 py-6 sm:py-8
           text-center shadow-xl backdrop-blur-sm border-b border-blue-900 z-10
+          overflow-visible
         "
       >
-        {/* Nombre con link a "/" */}
+        {/* Nombre → Home */}
         <Link
           to="/"
           className="
@@ -85,7 +134,7 @@ export default function Header() {
           </a>
         </div>
 
-        {/* Redes + botón Más personal */}
+        {/* Redes + Más personal + CV (un solo botón) */}
         <div className="mt-3 relative z-10 flex flex-col items-center gap-2 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-6">
           <a
             href="https://www.linkedin.com/in/esteban-javier-scalerandi-807386277"
@@ -96,7 +145,9 @@ export default function Header() {
             <FaLinkedin className="shrink-0" />
             <span>{pickByLang(content, "linkedin", lang)}</span>
           </a>
+
           <span className="hidden sm:inline text-slate-400">|</span>
+
           <a
             href="https://github.com/EJScalerandi"
             target="_blank"
@@ -106,12 +157,26 @@ export default function Header() {
             <FaGithub className="shrink-0" />
             <span>{pickByLang(content, "github", lang)}</span>
           </a>
+
           <span className="hidden sm:inline text-slate-400">|</span>
+
           <button
             onClick={goPersonal}
             className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 bg-white/90 hover:bg-white text-slate-800 shadow ring-1 ring-slate-300 text-sm sm:text-base"
           >
             {t("morePersonal")}
+          </button>
+
+          <span className="hidden sm:inline text-slate-400">|</span>
+
+          <button
+            onClick={handleDownloadCV}
+            className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 bg-white/90 hover:bg-white text-slate-800 shadow ring-1 ring-slate-300 text-sm sm:text-base"
+            title={pickByLang(content, "cv_btn", lang)}
+            aria-label={pickByLang(content, "cv_btn", lang)}
+          >
+            <FaDownload />
+            {pickByLang(content, "cv_btn", lang)}
           </button>
         </div>
       </header>
